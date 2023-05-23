@@ -22,36 +22,6 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios';
-
-export default {
-  data() {
-    return {
-      formData: {
-        name: '',
-        email: '',
-        message: ''
-      },
-      isSubmitted: false
-    };
-  },
-  methods: {
-    submitForm(event) {
-  event.preventDefault();
-
-  axios.post('', this.formData)  // Reemplaza con la URL de tu backend local
-    .then(() => {
-      this.isSubmitted = true;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
-  }
-};
-</script>
 
 <style scoped>
 .contact-page {
