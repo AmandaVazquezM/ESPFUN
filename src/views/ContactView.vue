@@ -40,7 +40,7 @@ export default {
     submitForm(event) {
   event.preventDefault();
 
-  axios.post('http://localhost:8080/contact', this.formData)  // Reemplaza con la URL de tu backend local
+  axios.post('', this.formData)  // Reemplaza con la URL de tu backend local
     .then(() => {
       this.isSubmitted = true;
     })
