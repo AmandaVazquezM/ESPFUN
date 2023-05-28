@@ -1,0 +1,20 @@
+type Comentarios @model @auth(rules: [{allow: public, operations: [create, read]}]) {
+  id: ID!
+  comentario: String
+  Usuarios: [Usuario] @manyToMany(relationName: "ComentariosUsuario")
+}
+
+type Perfil @model @auth(rules: [{allow: public, operations: [read]}]) {
+  id: ID!
+  Nombre: String
+  Usuarios: [Usuario] @hasMany(indexName: "byPerfil", fields: ["id"])
+}
+
+type Usuario @model @auth(rules: [{allow: public, operations: [create, read]}]) {
+  id: ID!
+  Nombre: String
+  Contrasena: String
+  Correo: AWSEmail
+  perfilID: ID! @index(name: "byPerfil")
+  comentarioss: [Comentarios] @manyToMany(relationName: "ComentariosUsuario")
+}

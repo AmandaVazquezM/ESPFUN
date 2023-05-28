@@ -32,9 +32,10 @@ main{
   }
   .game img {
     width: 100%;
-    height: auto;
+    height: 80%;
     cursor: pointer;
   }
+ 
 /***********************************************************************************************/
 .opinions-container {
   display: flex;

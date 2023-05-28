@@ -1,0 +1,17 @@
+{
+  "providers": [
+    "awscloudformation"
+  ],
+  "projectName": "ESPFUN",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "vue",
+    "config": {
+      "SourceDir": "Documents\\Proyecto\\proyecto",
+      "DistributionDir": "C:\\Users\\USER\\Documents\\Proyecto\\proyecto\\dist",
+      "BuildCommand": "npm run serve",
+      "StartCommand": "npm.cmd run-script serve"
+    }
+  }
+}

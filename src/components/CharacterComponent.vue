@@ -1,25 +1,31 @@
 <template>
   <div class="container">
-    <h2 class="my-4">Juego de Rellenar Letras</h2>
-    <div v-if="currentQuestionIndex >= 0">
-      <h3>{{ currentQuestion.text }}</h3>
-      <div class="mb-4">
-        <p class="mb-0">
-          <span v-for="(letter, index) in currentQuestion.blanks" :key="index">
-            <template v-if="letter !== '_'">{{ letter }}</template>
-            <template v-else>
-              <button class="btn btn-secondary me-2 mb-2" @click="fillBlank(letter)">{{ letter }}</button>
-            </template>
-          </span>
-        </p>
+    <main>
+      <table>
+        <tr v-for="(row, rowIndex) in grid" :key="rowIndex">
+          <td
+            v-for="(cell, cellIndex) in row"
+            :key="cellIndex"
+            :class="[{ activo: isActiveCell(rowIndex, cellIndex) }, 'celdas']"
+            :contenteditable="isEditableCell(rowIndex, cellIndex)"
+            @input="updateCellValue(rowIndex, cellIndex, $event.target.innerText)"
+          >
+            {{ cell }}
+          </td>
+        </tr>
+      </table>
+    </main>
+    <div id="teclado">
+      <div class="teclado">
+        <button
+          v-for="(letter, index) in keyboard"
+          :key="index"
+          @click="fillCell(letter)"
+          :class="{ borrar: letter === ' ', enter: letter === 'enter' }"
+        >
+          {{ letter === 'enter' ? 'Enter' : letter }}
+        </button>
       </div>
-    </div>
-    <div v-else>
-      <h3>¡Juego completado!</h3>
-      <p>Puntaje: {{ score }} / {{ totalQuestions }}</p>
-    </div>
-    <div class="keyboard mt-4">
-      <button class="btn btn-secondary me-2 mb-2" v-for="(letter, index) in filteredKeyboard" :key="index" @click="fillBlank(letter)">{{ letter }}</button>
     </div>
   </div>
 </template>
@@ -28,86 +34,169 @@
 export default {
   data() {
     return {
-      currentQuestionIndex: 0,
-      score: 0,
-      questions: [
-        {
-          text: 'La __sa marr__n salt_ s_ _ver e_ _osa.',
-          blanks: ['_', '_', '_', '_', '_', '_', '_'],
-          answer: ['g', 'a', 't', 'a', 's', 'a', 'o']
-        },
-        {
-          text: '__y un __s__ra __taq__lla.',
-          blanks: ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_'],
-          answer: ['H', 'a', 'b', 'í', 'a', ' ', 'u', 'n', 'a', 's']
-        },
-        // Agrega más frases y respuestas aquí
-      ],
-      keyboard: [
-        'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
-        'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ñ',
-        'Z', 'X', 'C', 'V', 'B', 'N', 'M', ' '
-      ]
+      grid: [],
+      activeRowIndex: 0,
+      activeCellIndex: 0,
+      words: [ "FOCAS", "COMER"],
+      selectedWord: ""
     };
   },
   computed: {
-    currentQuestion() {
-      return this.questions[this.currentQuestionIndex];
-    },
-    totalQuestions() {
-      return this.questions.length;
-    },
-    filteredKeyboard() {
-      return this.keyboard.filter(letter => !this.currentQuestion.blanks.includes(letter));
+    keyboard() {
+      return [
+        "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
+        "A", "S", "D", "F", "G", "H", "J", "K", "L",
+        "Ñ", "enter", "Z", "X", "C", "V", "B", "N", "M", " "
+      ];
     }
   },
+  mounted() {
+    this.selectRandomWord();
+  },
   methods: {
-    fillBlank(letter) {
-      const currentQuestion = this.questions[this.currentQuestionIndex];
-      const blankIndex = currentQuestion.blanks.findIndex(blank => blank === '_');
-      if (blankIndex !== -1) {
-        this.$set(currentQuestion.blanks, blankIndex, letter);
-        if (this.checkAnswer(currentQuestion.blanks, currentQuestion.answer)) {
-          this.score++;
-          this.currentQuestionIndex++;
-          this.resetBlanks();
+    generateGrid() {
+      const rows = 1;
+      const cols = this.selectedWord.length;
+      this.grid = Array(rows)
+        .fill("")
+        .map(() => Array(cols).fill(""));
+      for (let i = 0; i < cols - 1; i++) {
+        this.grid[0][i] = this.selectedWord[i];
+      }
+    },
+    selectRandomWord() {
+      this.selectedWord = this.words[Math.floor(Math.random() * this.words.length)];
+      this.generateGrid();
+    },
+    isActiveCell(rowIndex, cellIndex) {
+      return rowIndex === this.activeRowIndex && cellIndex === this.activeCellIndex;
+    },
+    isEditableCell(rowIndex, cellIndex) {
+      return rowIndex === 0 && cellIndex === this.grid[0].length - 1;
+    },
+    fillCell(letter) {
+      if (letter === " ") {
+        this.deleteLetter();
+      } else if (letter === "enter") {
+        this.checkWord();
+      } else {
+        const cellValue = this.grid[this.activeRowIndex][this.activeCellIndex];
+        if (cellValue === "") {
+          this.grid[this.activeRowIndex][this.activeCellIndex] = letter;
+          this.moveToNextCell();
         }
       }
     },
-    checkAnswer(blanks, answer) {
-      return blanks.join('') === answer.join('');
+    deleteLetter() {
+      if (this.activeCellIndex > 0) {
+        this.grid[this.activeRowIndex][this.activeCellIndex] = "";
+        this.moveToPreviousCell();
+      } else if (this.activeRowIndex > 0) {
+        this.activeRowIndex--;
+        this.activeCellIndex = this.grid[this.activeRowIndex].length - 1;
+        this.grid[this.activeRowIndex][this.activeCellIndex] = "";
+      }
     },
-    resetBlanks() {
-      const currentQuestion = this.questions[this.currentQuestionIndex];
-      currentQuestion.blanks = Array(currentQuestion.answer.length).fill('_');
+    moveToNextCell() {
+      if (this.activeCellIndex < this.grid[this.activeRowIndex].length - 1) {
+        this.activeCellIndex++;
+      } else if (this.activeRowIndex < this.grid.length - 1) {
+        this.activeRowIndex++;
+        this.activeCellIndex = 0;
+      }
+    },
+    moveToPreviousCell() {
+      if (this.activeCellIndex > 0) {
+        this.activeCellIndex--;
+      } else if (this.activeRowIndex > 0) {
+        this.activeRowIndex--;
+        this.activeCellIndex = this.grid[this.activeRowIndex].length - 1;
+      }
+    },
+    updateCellValue(rowIndex, cellIndex, value) {
+      this.grid[rowIndex][cellIndex] = value.toUpperCase();
+    },
+    checkWord() {
+      const enteredWord = this.grid.map(row => row.join("")).join("");
+      if (enteredWord == this.selectedWord) {
+        alert("¡Has acertado!");
+      } else {
+        alert("Palabra incorrecta.");
+      }
     }
   }
 };
 </script>
 
 <style scoped>
-.container {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-  max-width: 1000px;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-h2 {
+.celdas {
+  background-color: #f9f5f5;
+  width: 50px;
+  height: 50px;
   text-align: center;
-  margin-bottom: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+  border-radius: 0.5rem;
 }
 
-.btn-secondary {
-  font-size: 18px;
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+table {
+  margin-top: 10%;
+  width: 20vw;
+  height: 5vw;
+  padding-left: 5px;
+}
+
+#teclado {
+  margin-left: 25%;
+  width: 590px;
+  background-color: #aaa;
+}
+
+.teclado {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.teclado button {
+  font-size: 20px;
   padding: 10px 15px;
   margin: 5px;
+  border: none;
   border-radius: 5px;
+  background-color: #fff;
   cursor: pointer;
 }
 
-.btn-secondary:hover {
-  background-color: #e9ecef;
+
+.teclado button.borrar {
+  padding: 0;
+  color: #fff;
+  background-color: red;
+  width: 5vw;
+  overflow: hidden;
+  height: 5vh;
 }
+
+.teclado button.enter {
+  grid-column: 4 / span 2;
+  background-color: rgb(0, 255, 119);
+}
+
 </style>

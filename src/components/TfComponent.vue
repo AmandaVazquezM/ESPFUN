@@ -26,58 +26,58 @@
         <div class="text-center">
           <h3>¡Juego completado!</h3>
           <p>Tu resultado: {{ correctAnswers }} respuestas correctas de {{ questions.length }}</p>
-          <button class="btn btn-primary" @click="startGame">Volver a jugar</button>
+          <button class="btn btn-primary" @click="restartGame">Volver a jugar</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<script>
+import { obtenerOraciones } from '@/services/OracionesService';
 
-    
-    <script>
-    import { obtenerOraciones } from '@/services/OracionesService';
-  
-    export default {
-      data() {
-        return {
-          gameStarted: false,
-          questions: [],
-          currentQuestionIndex: 0,
-          correctAnswers: 0,
-          showResultModal: false
-        };
-      },
-      methods: {
-        startGame() {
-          this.gameStarted = true;
-          this.questions = obtenerOraciones();
-          this.shuffleQuestions();
-        },
-        shuffleQuestions() {
-          for (let i = this.questions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [this.questions[i], this.questions[j]] = [this.questions[j], this.questions[i]];
-          }
-        },
-        checkAnswer(userAnswer) {
-          const currentQuestion = this.questions[this.currentQuestionIndex];
-          if (userAnswer === currentQuestion.answer) {
-            this.correctAnswers++;
-          }
-          this.currentQuestionIndex++;
-        },
-        showModal() {
-          this.showResultModal = true;
-          const applauseSound = new Audio('path/to/applause.mp3');
-          if (this.correctAnswers > this.questions.length / 2) {
-            applauseSound.play();
-          }
-        },
-        resetGame() {
-          this.gameStarted = false;
-          this.currentQuestionIndex = 0;
-          this.correctAnswers = 0;
-          this.showResultModal = false}
-        }}
-    </script>
+export default {
+  data() {
+    return {
+      gameStarted: false,
+      questions: [],
+      currentQuestionIndex: 0,
+      correctAnswers: 0,
+      showResultModal: false
+    };
+  },
+  methods: {
+    startGame() {
+      this.gameStarted = true;
+      this.questions = obtenerOraciones();
+      this.shuffleQuestions();
+    },
+    shuffleQuestions() {
+      for (let i = this.questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [this.questions[i], this.questions[j]] = [this.questions[j], this.questions[i]];
+      }
+    },
+    checkAnswer(userAnswer) {
+      const currentQuestion = this.questions[this.currentQuestionIndex];
+      if (userAnswer === currentQuestion.answer) {
+        this.correctAnswers++;
+      }
+      this.currentQuestionIndex++;
+    },
+    showModal() {
+      this.showResultModal = true;
+      const applauseSound = new Audio('path/to/applause.mp3');
+      if (this.correctAnswers > this.questions.length / 2) {
+        applauseSound.play();
+      }
+    },
+    restartGame() {
+      this.currentQuestionIndex = 0;
+      this.score = 0;
+      this.userAnswers = [];
+      this.correctAnswers = 0;
+    }
+  }
+};
+</script>

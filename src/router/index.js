@@ -8,6 +8,7 @@ import ChooseComponent from '@/components/ChooseComponent.vue';
 import TfComponent from '@/components/TfComponent.vue';
 import TriviaComponent from '@/components/TriviaComponent.vue';
 import PhraseComponent from '@/components/PhraseComponent.vue';
+import SynomComponent from '@/components/SynomComponent.vue'
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/contact',
     name: 'contact',
     component: ContactView
+  },
+  {
+    path: '/synom',
+    name: 'synom',
+    component: SynomComponent
   },
   {
     path: '/documents',
