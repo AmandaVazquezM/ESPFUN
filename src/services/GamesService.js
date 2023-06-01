@@ -5,37 +5,37 @@ export default {
         {
           name: '¿Sabes el significado?',
           category: 'semantica',
-          image: require('../assets/imgs/sinonimos.png'),
+          image: '../assets/imgs/sinonimos.png',
           component:'synom'
         },
         {
           name: 'Verdadero o falso',
           category: 'gramatica',
-          image:require('../assets/imgs/Captura.png'),
+          image:'../assets/imgs/Captura.png',
           component: 'true'
         },
         {
           name: 'Adivina la palabra',
           category: 'comprension_lectora',
-          image:require('../assets/imgs/palabras.png'),
+          image:'../assets/imgs/palabras.png',
           component: 'phrase'
         },
         {
           name: 'Trivia',
           category: 'ortografia',
-          image:require('../assets/imgs/Trivia.png'),
+          image:'../assets/imgs/Trivia.png',
           component: 'trivia'
         },
         {
           name: 'Elige la opción correcta',
           category: 'comprension_lectora',
-          image:require('../assets/imgs/AoB.png'),
+          image:'../assets/imgs/AoB.png',
           component: 'choose'
         },
         {
           name: 'Elige la letra correcta',
           category: 'ortografia',
-          image:require('../assets/imgs/letras.png'),
+          image:'../assets/imgs/letras.png',
           component: 'character'
         }
       ];

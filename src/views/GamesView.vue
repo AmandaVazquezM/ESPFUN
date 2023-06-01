@@ -18,13 +18,13 @@
     </div>
 
     <div class="games">
-  <div class="game col-lg-4 col-md-6 col-sm-12">
-    <router-link :to="{ name: filteredGames[0].component }">
-      <img v-bind:src="filteredGames[0].image" :alt="filteredGames[0].name">
-      <p>{{ filteredGames[0].name }}</p>
-    </router-link>
-  </div>
-</div>
+      <div v-for="(game, index) in filteredGames" :key="index" class="game col-lg-4 col-md-6 col-sm-12">
+        <router-link :to="{ name: game.component }">
+          <img v-bind:src="require(game.image)" :alt="game.name">
+          <p>{{ game.name }}</p>
+        </router-link>
+      </div>
+    </div>
 
     <div v-if="showLoadMore" class="load-more text-center">
       <a href="#" class="btn btn-primary">Ver más</a>
