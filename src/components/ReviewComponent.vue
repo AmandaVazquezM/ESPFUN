@@ -2,9 +2,10 @@
   <section>
     <div class="container">
       <h2 class="text-center">Nuestros usuarios opinan</h2>
+      <br>
       <div class="row justify-content-center">
         <div class="col-md-4" v-for="(opinion) in displayedOpinions" :key="opinion.id">
-          <div class="opinion">
+          <div class="opinion card">
             <img src="../assets/imgs/usuario.png" alt="Imagen de opinión">
             <h3>{{ opinion.name }}</h3>
             <p>{{ opinion.content }}</p>
@@ -15,11 +16,29 @@
         <button class="btn btn-primary" @click="toggleOpinions">Ver más</button>
       </div>
     </div>
+    <br><br>
+    <div v-if="showMoreButton==false" class="row justify-content-center">
+      <div class="col-md-6">
+        <h4>⭐⭐Valoranos⭐⭐</h4>
+        <form @submit="addOpinion">
+          <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" class="form-control" id="name" v-model="newOpinion.name" required>
+          </div>
+          <div class="form-group">
+            <label for="content">Comentario:</label>
+            <textarea class="form-control" id="content" rows="3" v-model="newOpinion.content" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Agregar comentario</button>
+        </form>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
 import OpinionService from '../services/OpinionService';
+import { opinionsStorage } from '../services/OpinionService';
 
 export default {
   data() {
@@ -27,6 +46,7 @@ export default {
       opinions: [],
       displayedOpinions: [],
       showMoreButton: true,
+      newOpinion: {id: '', name: '', content: ''}
     };
   },
   mounted() {
@@ -37,7 +57,7 @@ export default {
       OpinionService.getOpinions()
         .then((opinions) => {
           this.opinions = opinions;
-          this.displayedOpinions = this.opinions.slice(0, 2); // Mostrar las primeras 2 opiniones
+          this.displayedOpinions = this.opinions.slice(0, 3); // Mostrar las primeras 2 opiniones
           if (this.opinions.length <= 2) {
             this.showMoreButton = false; // Ocultar el botón "Ver más" si no hay más opiniones
           }
@@ -48,13 +68,28 @@ export default {
     },
     toggleOpinions() {
       if (this.displayedOpinions.length === this.opinions.length) {
-        this.displayedOpinions = this.opinions.slice(0, 2); // Mostrar las primeras 2 opiniones
+        this.displayedOpinions = this.opinions.slice(0, 3); // Mostrar las primeras 2 opiniones
         this.showMoreButton = true; // Mostrar el botón "Ver más"
       } else {
         this.displayedOpinions = this.opinions; // Mostrar todas las opiniones
         this.showMoreButton = false; // Ocultar el botón "Ver más"
       }
     },
+    addOpinion() {
+      const newOpinion = {
+        id: this.opinions.length + 1, name: this.newOpinion.name, content: this.newOpinion.content,
+      }; 
+      this.opinions.push(newOpinion); //Agregar nueva opinion al array
+      localStorage.setItem(opinionsStorage, JSON.stringify(this.opinions)); //guardamos en localstorage
+      this.displayedOpinions = this.opinions.slice(0, 2); // Actualizar las opiniones mostradas
+      this.newOpinion.name = ''; // Limpiar el campo de nombre
+      this.newOpinion.content = ''; // Limpiar el campo de contenido
+      if (this.opinions.length <= 2) {
+        this.showMoreButton = false; // Ocultar el botón "Ver más" si no hay más opiniones
+      } else {
+        this.showMoreButton = true; // Mostrar el botón "Ver más" si hay más opiniones
+      }
+    }
   },
 };
 </script>

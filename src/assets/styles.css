@@ -42,15 +42,23 @@ main{
   justify-content: space-between;
   
 }
+.opinion-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .opinion {
+  margin-bottom: 20px;
   width: 100%;
   padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: pink;
 }
-/*************************************************************************************************/
+
 .filters {
   margin-bottom: 10px;
 }
@@ -77,4 +85,7 @@ main{
 
 .form-group {
   margin-bottom: 20px;
+}
+.section-title{
+  color:rgb(237, 36, 173);
 }

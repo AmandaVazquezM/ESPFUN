@@ -5,7 +5,6 @@
         <h2 class="section-title">Documentos</h2>
         <p>Accede a apuntes que te ayudarán a fortalecer tus conocimientos en lengua española. ¡Explora, aprende y diviértete!</p>
         <div class="col-md-6">
-          <input type="file" ref="fileInput" @change="subirArchivo" accept=".pdf" />
           <button type="button" class="btn btn-primary" @click="obtenerDocumentosServidor">Cargar Documentos del Servidor</button>
           <ul class="list-group">
             <li class="list-group-item" v-for="documento in documentosServidor" :key="documento.id">
@@ -53,7 +52,7 @@ export default {
     },
     getDocumentoUrlServidor(archivo) {
       // Aquí puedes construir la URL completa para acceder al archivo del servidor
-      return `URL_DEL_SERVIDOR/${archivo}`;
+      return `https://master.d11u5o33d0kafz.amplifyapp.com/${archivo}`;
     },
     async subirArchivo(event) {
       const file = event.target.files[0];
