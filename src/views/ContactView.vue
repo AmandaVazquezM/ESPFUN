@@ -27,7 +27,7 @@ export default {
   data() {
   return {
     formData: {
-      name: '', // Initialize with an empty string or provide a default value
+      name: '', 
       email: '',
       message: ''
     },
@@ -37,8 +37,7 @@ export default {
   methods: {
     submitForm() {
       
-      const url = 'https://iw4tivf27yl6jlhydikwsafqgm0giqut.lambda-url.eu-west-2.on.aws/'; // funcion Lambda
-
+      const url = 'https://iw4tivf27yl6jlhydikwsafqgm0giqut.lambda-url.eu-west-2.on.aws/'; 
       const data = JSON.stringify(this.formData);
 
       fetch(url, {
@@ -56,6 +55,7 @@ export default {
         }
       })
       .catch(error => {
+        this.isSubmitted =true;
         console.error(error);
       });
     }
