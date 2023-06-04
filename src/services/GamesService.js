@@ -1,8 +1,8 @@
-import sinonimosImage from '../assets/imgs/sinonimos.png';
-import palabrasImage from '../assets/imgs/palabras.png';
-import triviaImage from '../assets/imgs/Trivia.png';
-import aobImage from '../assets/imgs/AoB.png';
-import trueImage from '../assets/imgs/Captura.png';
+import sinonimosImage from 'src/assets/imgs/sinonimos.png';
+import palabrasImage from 'src/assets/imgs/palabras.png';
+import triviaImage from 'src/assets/imgs/Trivia.png';
+import aobImage from 'src/assets/imgs/AoB.png';
+import trueImage from 'src/assets/imgs/Captura.png';
 
 export default {
     getGames() {
