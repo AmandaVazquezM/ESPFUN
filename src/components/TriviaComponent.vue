@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import TriviaService from "../services/TriviaService.js";
+import { getQuestions } from "../services/TriviaService.js";
 
 export default {
   data() {
@@ -60,7 +60,7 @@ export default {
       this.currentQuestionIndex = 0;
       this.score = 0;
       this.userAnswer = null;
-      this.questions = await TriviaService.getQuestions();
+      this.questions =getQuestions();
       this.shuffleQuestions();
     },
     shuffleQuestions() {

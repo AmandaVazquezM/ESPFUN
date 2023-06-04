@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import DocumentsView from '@/views/DocumentsView.vue'
 import GamesView from '../views/GamesView.vue'
 import ContactView from '../views/ContactView.vue'
-import CharacterComponent from '@/components/CharacterComponent.vue';
 import ChooseComponent from '@/components/ChooseComponent.vue';
 import TfComponent from '@/components/TfComponent.vue';
 import TriviaComponent from '@/components/TriviaComponent.vue';
@@ -27,19 +25,9 @@ const routes = [
     component: SynomComponent
   },
   {
-    path: '/documents',
-    name: 'documents',
-    component: DocumentsView
-  },
-  {
     path: '/games',
     name: 'games',
     component: GamesView
-  },
-  {
-    path: '/character',
-    name: 'character',
-    component: CharacterComponent
   },
   {
     path: '/choose',

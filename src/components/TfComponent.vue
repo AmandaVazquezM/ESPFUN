@@ -1,21 +1,23 @@
 <template>
-  <div class="container mt-4 bg-light">
+  <br><br>
+  <h1 class="section-title">Verdadero o Falso</h1>
+  <div class="container d-flex flex-column min-vh-100 mt-5 ">
     <div v-if="!gameStarted" class="text-center">
-      <button class="btn btn-primary" @click="startGame">Comenzar</button>
+      <button class="btn btn-primary btn-lg" @click="startGame">Comenzar</button>
     </div>
 
     <div v-else>
-      <div class="card mb-3" v-if="currentQuestionIndex < questions.length">
+      <div class="card mb-3" v-if="currentQuestionIndex < currentQuestions.length">
         <div class="card-body">
-          <h5 class="card-title">Pregunta {{ currentQuestionIndex + 1 }}</h5>
-          <p class="card-text">{{ questions[currentQuestionIndex].sentence }}</p>
+          <h5 class="card-title">Pregunta {{ currentQuestionIndex + 1 }}/10</h5>
+          <p class="card-text">{{ currentQuestions[currentQuestionIndex].sentence }}</p>
           <div class="btn-group">
             <div class="row">
               <div class="col">
-                <button class="btn btn-success btn-block" @click="checkAnswer(true)">Verdadero</button>
+                <button class="btn btn-success btn-block btn-lg" @click="checkAnswer(true)">Verdadero</button>
               </div>
               <div class="col">
-                <button class="btn btn-danger btn-block" @click="checkAnswer(false)">Falso</button>
+                <button class="btn btn-danger btn-block btn-lg" @click="checkAnswer(false)">Falso</button>
               </div>
             </div>
           </div>
@@ -25,7 +27,7 @@
       <div v-else>
         <div class="text-center">
           <h3>¡Juego completado!</h3>
-          <p>Tu resultado: {{ correctAnswers }} respuestas correctas de {{ questions.length }}</p>
+          <p>Tu resultado: {{ correctAnswers }} respuestas correctas de {{ currentQuestions.length }}</p>
           <button class="btn btn-primary" @click="restartGame">Volver a jugar</button>
         </div>
       </div>
@@ -34,23 +36,24 @@
 </template>
 
 <script>
-import { obtenerOraciones } from '@/services/OracionesService';
+import { getSentences } from '@/services/SentenceService';
 
 export default {
   data() {
     return {
       gameStarted: false,
       questions: [],
+      currentQuestions: [],
       currentQuestionIndex: 0,
       correctAnswers: 0,
-      showResultModal: false
     };
   },
   methods: {
     startGame() {
       this.gameStarted = true;
-      this.questions = obtenerOraciones();
+      this.questions = getSentences();
       this.shuffleQuestions();
+      this.currentQuestions = this.questions.slice(0, 10);
     },
     shuffleQuestions() {
       for (let i = this.questions.length - 1; i > 0; i--) {
@@ -59,24 +62,17 @@ export default {
       }
     },
     checkAnswer(userAnswer) {
-      const currentQuestion = this.questions[this.currentQuestionIndex];
+      const currentQuestion = this.currentQuestions[this.currentQuestionIndex];
       if (userAnswer === currentQuestion.answer) {
         this.correctAnswers++;
       }
       this.currentQuestionIndex++;
     },
-    showModal() {
-      this.showResultModal = true;
-      const applauseSound = new Audio('path/to/applause.mp3');
-      if (this.correctAnswers > this.questions.length / 2) {
-        applauseSound.play();
-      }
-    },
     restartGame() {
       this.currentQuestionIndex = 0;
-      this.score = 0;
-      this.userAnswers = [];
       this.correctAnswers = 0;
+      this.shuffleQuestions();
+      this.currentQuestions = this.questions.slice(0, 10);
     }
   }
 };

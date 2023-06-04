@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex flex-column min-vh-100 mt-4">
-    <h2>Juegos disponibles</h2>
+    <h2 class="section-title">Juegos disponibles</h2>
     <div class="row">
       <div class="col-lg-9 col-md-8 col-sm-12"></div>
       <div class="col-lg-3 col-md-4 col-sm-12">
@@ -20,7 +20,7 @@
     <div class="games">
       <div v-for="(game, index) in filteredGames" :key="index" class="game col-lg-4 col-md-6 col-sm-12">
         <router-link :to="{ name: game.component }">
-          <img v-bind:src="require(game.image)" :alt="game.name">
+          <img v-bind:src="game.image" :alt="game.name">
           <p>{{ game.name }}</p>
         </router-link>
       </div>

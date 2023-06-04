@@ -151,13 +151,6 @@ const triviaQuestions = [
     }
   ];
   
-  export default {
-    getQuestions() {
-      // Simulamos una llamada asíncrona a un servicio con un retardo de 500ms
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(triviaQuestions);
-        }, 500);
-      });
-    }
-  };
+  export function getQuestions() {
+      return triviaQuestions
+  } 

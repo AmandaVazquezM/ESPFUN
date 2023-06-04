@@ -32,12 +32,6 @@ export default {
           image:require('../assets/imgs/AoB.png'),
           component: 'choose'
         },
-        {
-          name: 'Elige la letra correcta',
-          category: 'ortografia',
-          image:require('../assets/imgs/letras.png'),
-          component: 'character'
-        }
       ];
     },
   };

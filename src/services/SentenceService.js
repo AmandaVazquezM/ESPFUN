@@ -1,4 +1,4 @@
-const oraciones = [
+const sentences = [
     { sentence: 'La palabra guión se escribe con tilde', answer: false },
     { sentence: '¿Oración y frase es lo mismo?', answer: false },
     { sentence: '¿Los sustantivos son palabras que nombran a personas, animales o cosas?', answer: true},
@@ -31,7 +31,7 @@ const oraciones = [
     { sentence: '¿Las onomatopeyas son palabras que imitan sonidos reales?', answer: true},
   ];
   
-  export function obtenerOraciones() {
-    return oraciones;
+  export function getSentences() {
+    return sentences;
   }
   

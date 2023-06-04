@@ -1,30 +1,20 @@
 <template>
-  <div class="container">
-    <main>
-      <table>
-        <tr v-for="(row, rowIndex) in grid" :key="rowIndex">
-          <td
-            v-for="(cell, cellIndex) in row"
-            :key="cellIndex"
-            :class="[{ activo: isActiveCell(rowIndex, cellIndex) }, 'celdas']"
-            :contenteditable="isEditableCell(rowIndex, cellIndex)"
-            @input="updateCellValue(rowIndex, cellIndex, $event.target.innerText)"
-          >
-            {{ cell }}
-          </td>
-        </tr>
-      </table>
-    </main>
+  <div class="container d-flex flex-column min-vh-100 mt-5">
+    <table>
+      <tr>
+        <td v-for="(letter, index) in selectedWord" :key="index" :class="[{ activo: isActiveCell(0, index) }, 'celdas']"
+          :contenteditable="isEditableCell(0, index)" @input="updateCellValue(0, index, $event.target.innerText)">
+          {{ index === missingLetterIndex ? (selectedLetter ? selectedLetter : '_') : letter }}
+        </td>
+      </tr>
+    </table>
+    <br><br>
     <div id="teclado">
       <div class="teclado">
-        <button
-          v-for="(letter, index) in keyboard"
-          :key="index"
-          @click="fillCell(letter)"
-          :class="{ borrar: letter === ' ', enter: letter === 'enter' }"
-        >
-          {{ letter === 'enter' ? 'Enter' : letter }}
+        <button v-for="(letter, index) in keyboard" :key="index" @click="fillCell(letter)">
+          {{ letter }}
         </button>
+        <button class="btn btn-enter" @click="checkWord">Enviar</button>
       </div>
     </div>
   </div>
@@ -34,96 +24,64 @@
 export default {
   data() {
     return {
-      grid: [],
+      selectedWord: [],
+      missingLetterIndex: 0,
       activeRowIndex: 0,
       activeCellIndex: 0,
-      words: [ "FOCAS", "COMER"],
-      selectedWord: ""
-    };
-  },
-  computed: {
-    keyboard() {
-      return [
+      selectedLetter: "",
+      keyboard: [
         "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
         "A", "S", "D", "F", "G", "H", "J", "K", "L",
-        "Ñ", "enter", "Z", "X", "C", "V", "B", "N", "M", " "
-      ];
-    }
+        "Z", "X", "C", "V", "B", "N", "M"
+      ]
+    };
   },
   mounted() {
     this.selectRandomWord();
   },
   methods: {
-    generateGrid() {
-      const rows = 1;
-      const cols = this.selectedWord.length;
-      this.grid = Array(rows)
-        .fill("")
-        .map(() => Array(cols).fill(""));
-      for (let i = 0; i < cols - 1; i++) {
-        this.grid[0][i] = this.selectedWord[i];
-      }
-    },
     selectRandomWord() {
-      this.selectedWord = this.words[Math.floor(Math.random() * this.words.length)];
-      this.generateGrid();
+      const words = ["FOCAS", "COMER", "PALABRA", "TECLADO", "GATO", "COCODRILO", "DINOSAURIO", "ORDENADOR", "CEREBRO", "VACA", "REBANADA"];
+      this.selectedWord = Array.from(words[Math.floor(Math.random() * words.length)]);
+      this.missingLetterIndex = Math.floor(Math.random() * this.selectedWord.length);
     },
     isActiveCell(rowIndex, cellIndex) {
       return rowIndex === this.activeRowIndex && cellIndex === this.activeCellIndex;
     },
     isEditableCell(rowIndex, cellIndex) {
-      return rowIndex === 0 && cellIndex === this.grid[0].length - 1;
+      return cellIndex === this.missingLetterIndex;
     },
     fillCell(letter) {
-      if (letter === " ") {
-        this.deleteLetter();
-      } else if (letter === "enter") {
-        this.checkWord();
-      } else {
-        const cellValue = this.grid[this.activeRowIndex][this.activeCellIndex];
-        if (cellValue === "") {
-          this.grid[this.activeRowIndex][this.activeCellIndex] = letter;
-          this.moveToNextCell();
-        }
-      }
-    },
-    deleteLetter() {
-      if (this.activeCellIndex > 0) {
-        this.grid[this.activeRowIndex][this.activeCellIndex] = "";
-        this.moveToPreviousCell();
-      } else if (this.activeRowIndex > 0) {
-        this.activeRowIndex--;
-        this.activeCellIndex = this.grid[this.activeRowIndex].length - 1;
-        this.grid[this.activeRowIndex][this.activeCellIndex] = "";
-      }
+      if (this.isEditableCell(0, this.activeCellIndex)) {
+    this.selectedLetter = letter;
+    this.updateCellValue(0, this.missingLetterIndex, letter);
+    this.moveToNextCell();
+  }
     },
     moveToNextCell() {
-      if (this.activeCellIndex < this.grid[this.activeRowIndex].length - 1) {
+      if (this.activeCellIndex < this.selectedWord.length - 1) {
         this.activeCellIndex++;
-      } else if (this.activeRowIndex < this.grid.length - 1) {
-        this.activeRowIndex++;
-        this.activeCellIndex = 0;
-      }
-    },
-    moveToPreviousCell() {
-      if (this.activeCellIndex > 0) {
-        this.activeCellIndex--;
-      } else if (this.activeRowIndex > 0) {
-        this.activeRowIndex--;
-        this.activeCellIndex = this.grid[this.activeRowIndex].length - 1;
       }
     },
     updateCellValue(rowIndex, cellIndex, value) {
-      this.grid[rowIndex][cellIndex] = value.toUpperCase();
+      this.selectedWord.splice(cellIndex, 1, value.toUpperCase());
     },
     checkWord() {
-      const enteredWord = this.grid.map(row => row.join("")).join("");
-      if (enteredWord == this.selectedWord) {
+   const filledWord = this.selectedWord.join("");
+  const isCorrect = filledWord === this.selectedWord.join("") && this.selectedWord.includes(this.selectedLetter);
+
+      if (isCorrect) {
         alert("¡Has acertado!");
       } else {
-        alert("Palabra incorrecta.");
+        alert("La palabra es incorrecta.");
       }
-    }
+      this.nextWord();
+    },
+    nextWord() {
+  this.selectRandomWord();
+  this.activeCellIndex = 0;
+  this.selectedLetter = "";
+},
   }
 };
 </script>
@@ -156,9 +114,8 @@ table {
   margin-top: 10%;
   width: 20vw;
   height: 5vw;
-  padding-left: 5px;
+  margin-left: 40%;
 }
-
 #teclado {
   margin-left: 25%;
   width: 590px;
@@ -183,20 +140,25 @@ table {
   background-color: #fff;
   cursor: pointer;
 }
-
-
-.teclado button.borrar {
-  padding: 0;
-  color: #fff;
-  background-color: red;
-  width: 5vw;
-  overflow: hidden;
-  height: 5vh;
+.teclado button:hover{
+  font-size: 20px;
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f6ec79;
+  cursor: pointer;
+}
+.teclado button:active{
+  font-size: 20px;
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffc2fd;
+  cursor: pointer;
 }
 
-.teclado button.enter {
-  grid-column: 4 / span 2;
-  background-color: rgb(0, 255, 119);
-}
+
 
 </style>

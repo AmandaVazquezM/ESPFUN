@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <h2 class="text-center">Nuestros usuarios opinan</h2>
+      <h2 class="text-center section-title">Nuestros usuarios opinan</h2>
       <br>
       <div class="row justify-content-center">
         <div class="col-md-4" v-for="(opinion) in displayedOpinions" :key="opinion.id">
@@ -57,9 +57,9 @@ export default {
       OpinionService.getOpinions()
         .then((opinions) => {
           this.opinions = opinions;
-          this.displayedOpinions = this.opinions.slice(0, 3); // Mostrar las primeras 2 opiniones
+          this.displayedOpinions = this.opinions.slice(0, 3); 
           if (this.opinions.length <= 2) {
-            this.showMoreButton = false; // Ocultar el botón "Ver más" si no hay más opiniones
+            this.showMoreButton = false; 
           }
         })
         .catch((error) => {
@@ -68,26 +68,26 @@ export default {
     },
     toggleOpinions() {
       if (this.displayedOpinions.length === this.opinions.length) {
-        this.displayedOpinions = this.opinions.slice(0, 3); // Mostrar las primeras 2 opiniones
-        this.showMoreButton = true; // Mostrar el botón "Ver más"
+        this.displayedOpinions = this.opinions.slice(0, 3); 
+        this.showMoreButton = true; 
       } else {
-        this.displayedOpinions = this.opinions; // Mostrar todas las opiniones
-        this.showMoreButton = false; // Ocultar el botón "Ver más"
+        this.displayedOpinions = this.opinions; 
+        this.showMoreButton = false; 
       }
     },
     addOpinion() {
       const newOpinion = {
         id: this.opinions.length + 1, name: this.newOpinion.name, content: this.newOpinion.content,
       }; 
-      this.opinions.push(newOpinion); //Agregar nueva opinion al array
-      localStorage.setItem(opinionsStorage, JSON.stringify(this.opinions)); //guardamos en localstorage
-      this.displayedOpinions = this.opinions.slice(0, 2); // Actualizar las opiniones mostradas
-      this.newOpinion.name = ''; // Limpiar el campo de nombre
-      this.newOpinion.content = ''; // Limpiar el campo de contenido
+      this.opinions.push(newOpinion); 
+      localStorage.setItem(opinionsStorage, JSON.stringify(this.opinions)); 
+      this.displayedOpinions = this.opinions.slice(0, 2); 
+      this.newOpinion.name = ''; 
+      this.newOpinion.content = ''; 
       if (this.opinions.length <= 2) {
-        this.showMoreButton = false; // Ocultar el botón "Ver más" si no hay más opiniones
+        this.showMoreButton = false; 
       } else {
-        this.showMoreButton = true; // Mostrar el botón "Ver más" si hay más opiniones
+        this.showMoreButton = true; 
       }
     }
   },

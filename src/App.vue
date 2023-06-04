@@ -18,9 +18,6 @@
               <router-link class="nav-link" to="/games">Juegos</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/documents">Apuntes</router-link>
-            </li>
-            <li class="nav-item">
               <router-link class="nav-link" to="/contact">Contacta con nosotros</router-link>
             </li>
           </ul>
