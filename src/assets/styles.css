@@ -7,6 +7,7 @@
   background-color: rgb(211, 248, 236);
 }
 /***********************************************************************************************/
+/*Estilos principales*/
 header{
   background-color: rgb(238, 255, 177);
 }
@@ -21,8 +22,9 @@ a:hover{
   color: rgb(255, 255, 0);
 }
 /***********************************************************************************************/
-/*Estilos de las imagenes de la web*/
-.intro-image {
+/*Estilos imagenes de la web*/
+
+.intro-image {  
   width: 250px; 
   height: 120px;
   margin-left: 20px;
@@ -50,6 +52,7 @@ a:hover{
   }
  
 /***********************************************************************************************/
+/*Estilos para el componente de opiniones (tarjetas de opinión)*/
 .opinions-container {
   display: flex;
   justify-content: space-between;
@@ -71,7 +74,8 @@ a:hover{
   border-radius: 5px;
   background-color: pink;
 }
-
+/**************************************************************************************************/
+/*Estilos para la lista de juegos y su filtro*/
 .filters {
   margin-bottom: 10px;
 }
@@ -90,7 +94,8 @@ a:hover{
   margin-top: 10px;
   text-align: center;
 }
-
+/**************************************************************************************************/
+/*Estilos para el formulario de contacto*/
 .contact-page {
   max-width: 500px;
   margin: 0 auto;
@@ -99,6 +104,8 @@ a:hover{
 .form-group {
   margin-bottom: 20px;
 }
+/**************************************************************************************************/
+/*Estilos para los elementos de los juegos*/
 .section-title{
   color:rgb(237, 36, 173);
 }
@@ -118,6 +125,9 @@ a:hover{
   margin-left: 20%;
   margin-right: 20%;
 }
+
+/**********************************************************************************************/
+/*Estilos para los botones*/
 .btn-primary{
   background-color: rgb(237, 36, 173);
   border-color: rgb(237, 36, 173);}
@@ -127,4 +137,20 @@ a:hover{
 }
 .btn-option {
   margin-bottom: 10px;
+}
+
+/**********************************************************************************************/
+/*Estilos para el menú de navegación*/
+@media (max-width: 991.98px) {
+  .navbar-nav {
+    flex-direction: column;
+  }
+  .navbar-collapse {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease-out;
+  }
+  .navbar-collapse.show {
+    max-height: 500px;
+  }
 }

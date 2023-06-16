@@ -23,42 +23,74 @@
 </template>
 
 <script>
+
 export default {
   data() {
-  return {
-    formData: {
-      name: '', 
-      email: '',
-      message: ''
-    },
-    isSubmitted: false
-  };
-},
+    return {
+      formData: {
+        name: '',
+        email: '',
+        message: ''
+      },
+      isSubmitted: false
+    };
+  },
   methods: {
     submitForm() {
-      
-      const url = 'https://iw4tivf27yl6jlhydikwsafqgm0giqut.lambda-url.eu-west-2.on.aws/'; 
-      const data = JSON.stringify(this.formData);
+      if (!this.validateForm()) {
+        return;
+      }
+
+      const url = 'http://localhost:1025/email'; 
+
+      const data = {
+        from: this.formData.email,
+        to: 'usuarioprueba097@gmail.com',
+        subject: 'Asunto del correo',
+        text: `Nombre: ${this.formData.name} Mensaje: ${this.formData.message}`
+
+      };
+
 
       fetch(url, {
         method: 'POST',
-        body: data,
+        body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json'
         }
       })
-      .then(response => {
-        if (response.ok) {
+        .then(response => {
+          if (response.ok) {
+            this.isSubmitted = true;
+          } else {
+            throw new Error('Error al enviar el formulario');
+          }
+        })
+        .catch(error => {
           this.isSubmitted = true;
-        } else {
-          throw new Error('Error al enviar el formulario');
-        }
-      })
-      .catch(error => {
-        this.isSubmitted =true;
-        console.error(error);
-      });
+          console.error(error);
+        });
+    }
+    ,
+    validateForm() {
+      let isValid = true;
+      if (this.formData.name.trim() === '') {
+        isValid = false;
+        alert("El nombre no es válido");
+      }
+      const emailRegex = /^\S+@\S+\.\S+$/;
+      if (!emailRegex.test(this.formData.email)) {
+        isValid = false;
+        alert("El email no es válido");
+      }
+      if (this.formData.message.trim() === '') {
+        isValid = false;
+        alert("El mensaje no es válido");
+      }
+
+      return isValid;
     }
   }
 };
 </script>
+

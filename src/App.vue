@@ -27,3 +27,13 @@
     <router-view />
   </div>
 </template>
+
+<script>
+export default {
+  mounted() {
+    document.querySelector('.navbar-toggler').addEventListener('click', function() {
+      document.querySelector('.navbar-collapse').classList.toggle('show');
+    });
+  }
+}
+</script>

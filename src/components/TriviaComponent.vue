@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container d-flex flex-column min-vh-100 mt-5">
     <h2 class="mt-4">Trivia de Lengua y Literatura</h2>
     <div class="card mt-4" v-if="currentQuestionIndex === -1">
       <div class="card-body">
@@ -9,9 +9,10 @@
     <div class="card mt-4" v-else-if="currentQuestionIndex >= 0 && currentQuestionIndex < totalQuestions">
       <div class="card-body">
         <h3>{{ currentQuestion.question }}</h3>
+        <br>
         <div v-for="(option, index) in currentQuestion.options" :key="index">
           <button
-            class="btn"
+            class="btn mb-2"
             :class="{
               'btn-primary': userAnswer !== index,
               'btn-success': userAnswer === index && userAnswer === currentQuestion.answer,

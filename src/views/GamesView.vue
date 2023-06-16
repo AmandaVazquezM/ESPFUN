@@ -20,8 +20,7 @@
     <div class="games">
       <div v-for="(game, index) in filteredGames" :key="index" class="game col-lg-4 col-md-6 col-sm-12">
         <router-link :to="{ name: game.component }">
-          <img v-bind:src="game.image" :alt="game.name">
-          <p>{{ game.name }}</p>
+          <h1>{{ game.name }}</h1>
         </router-link>
       </div>
     </div>

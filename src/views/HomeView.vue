@@ -17,12 +17,12 @@
           </div>
         </div>
       </section>
-      <section style="transform: scale(0.8);">
-        <iframe
-          src="https://player.vimeo.com/video/828395835?h=bee979ad42&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-          width="1280" height="720" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
-          title="High-intensity Classes"></iframe>
-      </section>
+      <section class="video-container">
+  <div class="video-wrapper">
+    <iframe src="https://player.vimeo.com/video/828395835?h=bee979ad42&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="1280" height="720" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="High-intensity Classes"></iframe>
+  </div>
+</section>
+
 
 
       <section id="contenido" class="section mt-4" style="width:80%; margin-left: 10%;">
@@ -88,3 +88,35 @@ export default {
   }
 }
 </script>
+<style>
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* Aspect ratio 16:9 (720/1280) */
+  overflow: hidden;
+}
+
+.video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .video-container {
+    padding-bottom: 75%; /* Adjust the aspect ratio for smaller screens */
+  }
+}
+
+</style>

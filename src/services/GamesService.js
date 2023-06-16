@@ -1,8 +1,4 @@
-import sinonimosImage from 'src/assets/imgs/sinonimos.png';
-import palabrasImage from 'src/assets/imgs/palabras.png';
-import triviaImage from 'src/assets/imgs/Trivia.png';
-import aobImage from 'src/assets/imgs/AoB.png';
-import trueImage from 'src/assets/imgs/Captura.png';
+
 
 export default {
     getGames() {
@@ -10,31 +6,31 @@ export default {
         {
           name: '¿Sabes el significado?',
           category: 'semantica',
-          image: require(sinonimosImage),
+          image: require('../assets/imgs/sinonimos.png'),
           component:'synom'
         },
         {
           name: 'Verdadero o falso',
           category: 'gramatica',
-          image:require(trueImage),
+          image:require('../assets/imgs/Captura.png'),
           component: 'true'
         },
         {
           name: 'Adivina la palabra',
           category: 'comprension_lectora',
-          image:require(palabrasImage),
+          image:require('../assets/imgs/palabras.png'),
           component: 'phrase'
         },
         {
           name: 'Trivia',
           category: 'ortografia',
-          image:require(triviaImage),
+          image:require('../assets/imgs/Trivia.png'),
           component: 'trivia'
         },
         {
           name: 'Elige la opción correcta',
           category: 'comprension_lectora',
-          image:require(aobImage),
+          image:require('../assets/imgs/AoB.png'),
           component: 'choose'
         },
       ];
