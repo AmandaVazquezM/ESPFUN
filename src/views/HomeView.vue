@@ -17,8 +17,8 @@
           </div>
         </div>
       </section>
-      <section class="video-container">
-  <div class="video-wrapper">
+      <section >
+  <div class="embed-responsive embed-responsive-16by9 my-5">
     <iframe src="https://player.vimeo.com/video/828395835?h=bee979ad42&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="1280" height="720" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="High-intensity Classes"></iframe>
   </div>
 </section>
